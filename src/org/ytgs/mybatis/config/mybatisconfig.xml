@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="lazyLoadingEnabled" value="false" />
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+	<typeAliases>	
+		
+		
+		<typeAlias alias="SysAuthorities" type="org.ytgs.security.model.SysAuthorities" />
+		<typeAlias alias="SysAuthoritiesResources" type="org.ytgs.security.model.SysAuthoritiesResources" />
+		<typeAlias alias="SysResources" type="org.ytgs.security.model.SysResources" />
+		<typeAlias alias="SysRoles" type="org.ytgs.security.model.SysRoles" />
+		<typeAlias alias="SysRolesAuthorities" type="org.ytgs.security.model.SysRolesAuthorities" />
+		<typeAlias alias="SysUsers" type="org.ytgs.security.model.SysUsers" />
+		<typeAlias alias="SysUsersRoles" type="org.ytgs.security.model.SysUsersRoles" />
+		<typeAlias alias="SysMenuResourceDto" type="org.ytgs.security.dto.SysMenuResourceDto" />
+		<typeAlias alias="SysAuthorityResourceDto" type="org.ytgs.system.dto.SysAuthorityResourceDto" />
+		<typeAlias alias="SysDept" type="org.ytgs.system.model.SysDept" /> 
+		<typeAlias alias="SysMenus" type="org.ytgs.system.model.SysMenus" />
+		<typeAlias alias="SysModules" type="org.ytgs.system.model.SysModules" />
+		<typeAlias alias="SysDeparts" type="org.ytgs.system.model.SysDeparts" />
+		<typeAlias alias="TreeNode" type="org.ytgs.util.TreeNode" />
+		<!-- 内部网站-->
+		<typeAlias alias="TotalContent" type="org.ytgs.portal.statiswork.model.TotalContent" />
+		<typeAlias alias="Content" type="org.ytgs.portal.common.model.Content" />
+		<typeAlias alias="Catagory" type="org.ytgs.portal.common.model.Catagory" />
+		<typeAlias alias="TreeModel" type="org.ytgs.common.tree.TreeModel" />
+		<typeAlias alias="Weather" type="org.ytgs.portal.common.model.Weather" />
+		
+		<!-- 征管绩效-->
+		<typeAlias alias="DjNsrxx" type="org.ytgs.zgjx.model.DjNsrxx" />
+		<typeAlias alias="DmMc" type="org.ytgs.zgjx.model.DmMc" />
+		
+		
+		<!-- 行政绩效-工作通知-->
+		<typeAlias alias="XzjxGztz" type="org.ytgs.xzjx.model.XzjxGztz" />
+		
+		<!-- wechat 别名 -->
+		<!-- 商品模块 -->
+		<typeAlias alias="ProductInfo" type="org.ytgs.portal.wechat.product.model.ProductInfo" />
+		<typeAlias alias="ProductStock" type="org.ytgs.portal.wechat.product.model.ProductStock" />
+		<typeAlias alias="ProductEvaluation" type="org.ytgs.portal.wechat.product.model.ProductEvaluation" />
+				
+		<!-- 登录模块 -->
+		<typeAlias alias="LoginUser" type="org.ytgs.portal.wechat.login.model.LoginUser" />
+
+	</typeAliases>	
+</configuration>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须为含有id中指示的方法的接口 -->
+<mapper namespace="org.ytgs.security.dao.SysRolesDao">
+	
+	<resultMap type="SysRoles" id="sysRolesMap">
+		<id column="ROLE_ID" property="roleId" />
+		<result column="ROLE_NAME" property="roleName" />
+		<result column="ROLE_DESC" property="roleDesc" />
+		<result column="ENABLED" property="enabled" />
+		<result column="ISSYS" property="issys"/>
+		<result column="MODULE" property="module" />
+	</resultMap>
+	
+	<select id="selectSysRoles" parameterType="int" resultMap="sysRolesMap">
+		select * from SYS_ROLES where ROLE_ID = #{roleId}
+	</select>
+	<insert id="insertSysRoles" parameterType="SysRoles" keyColumn="ROLE_ID" keyProperty="roleId">
+		insert into
+		SYS_ROLES (ROLE_ID, ROLE_NAME,
+		ROLE_DESC)
+		values (
+		#{roleId}, #{roleName},
+		#{roleDesc}
+		)
+	</insert>
+	<delete id="deleteSysRoles" parameterType="String">
+		delete from SYS_ROLES where ROLE_ID = #{roleId}
+	</delete>
+	<update id="updateSysRoles" parameterType="SysRoles">
+		update SYS_ROLES set ROLE_DESC	= #{roleDesc}
+		where role_id=#{roleId}
+	</update>
+	<select id="selectAllRolesByUserId" parameterType="String" resultMap="sysRolesMap">
+		select * from SYS_ROLES where role_id not in 
+		(select distinct role_id from SYS_USERS_ROLES  where user_id=#{userId})
+	</select>
+	<select id="selectAllRoles" resultMap="sysRolesMap">
+		select * from SYS_ROLES ORDER BY ROLE_ID LIMIT #{page} ,#{limit} 
+	</select>
+	<select id="selectRoleById" parameterType="String" resultType="String">
+		select ROLE_NAME from SYS_ROLES  where ROLE_ID=#{roleName}
+	</select>
+	<select id="selectAllRolesCount" resultType="int">
+		select count(1) from SYS_ROLES 
+	</select>
+</mapper>

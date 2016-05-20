@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ytgs.xzjx.dao.XzjxGztzMapper" >
+  <resultMap id="BaseResultMap" type="org.ytgs.xzjx.model.XzjxGztz" >
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="XXBT" property="xxbt" jdbcType="VARCHAR" />
+    <result column="FBR_DM" property="fbrDm" jdbcType="VARCHAR" />
+    <result column="FBR_MC" property="fbrMc" jdbcType="VARCHAR" />
+    <result column="FBSJ" property="fbsj" jdbcType="VARCHAR" />
+    <result column="FBBM_DM" property="fbbmDm" jdbcType="VARCHAR" />
+    <result column="FBBM_MC" property="fbbmMc" jdbcType="VARCHAR" />
+    <result column="FBJG_DM" property="fbjgDm" jdbcType="VARCHAR" />
+    <result column="FBJG_MC" property="fbjgMc" jdbcType="VARCHAR" />
+    <result column="FBFW" property="fbfw" jdbcType="VARCHAR" />
+    <result column="SAVEPATH" property="savepath" jdbcType="VARCHAR" />
+    <result column="ATTACHNAME" property="attachname" jdbcType="VARCHAR" />
+    <result column="ATTACHNAMEUPLOAD" property="attachnameupload" jdbcType="VARCHAR" />
+    <result column="FBR_DEPT_MC" property="fbrDeptMc" jdbcType="VARCHAR" />
+    <result column="FBR_DEPT_DM" property="fbrDeptDm" jdbcType="VARCHAR" />
+    <result column="FBSJQUERY" property="fbsjquery" jdbcType="VARCHAR" />
+    <result column="FBR_DEPT_SX" property="fbrDeptSx" jdbcType="CHAR" />
+    <result column="FBR_DEPT_PARENT" property="fbrDeptParent" jdbcType="VARCHAR" />
+  </resultMap>
+   <select id="selectGztzMxByPage" parameterType="org.ytgs.xzjx.model.XzjxGztz" resultMap="BaseResultMap">	
+		
+		SELECT t.*
+		             FROM XZJX_GZTZ T	
+		              <where>
+		                  <if test="xxbt!=null">
+                            xxbt  like #{xxbt}
+                           </if>
+                          <if test="content!=null">
+                            and content like #{content}
+                          </if>
+                          <if test="fbrDm!=null">
+                            and FBR_DM = #{fbrDm}
+                          </if>
+                          <if test="ksrq!=null">
+                            and FBSJQUERY  >= #{ksrq}
+                           </if>
+                           <if test="jzrq!=null">
+                           <![CDATA[  and FBSJQUERY  <= #{jzrq}
+                             ]]>
+                           </if>
+                          
+		              </where>		              	              		            
+		             ORDER BY FBSJ DESC
+		             LIMIT 0,10
+	</select>
+		<select id="selectGztzMxCount" parameterType="org.ytgs.xzjx.model.XzjxGztz" resultType="int">
+		select count(*)
+		from XZJX_GZTZ	
+		<where>
+             <if test="xxbt!=null">
+	             xxbt like #{xxbt}
+              </if>
+	         <if test="content!=null">
+		         and content like #{content}
+	          </if>
+	          <if test="fbrDm!=null">
+                   and FBR_DM = #{fbrDm}
+              </if>
+               <if test="ksrq!=null">
+                  and FBSJQUERY  >= #{ksrq}
+              </if>
+              <if test="jzrq!=null">
+                <![CDATA[ and FBSJQUERY  <= #{jzrq}
+                ]]>
+              </if>                   
+          </where>	 	              		
+	</select>
+	   <select id="selectGztzMxviewByPage" parameterType="org.ytgs.xzjx.model.XzjxGztz" resultMap="BaseResultMap">	
+		SELECT t.*
+		             FROM XZJX_GZTZ T	
+		              <where>
+		                  <if test="xxbt!=null">
+                            xxbt  like #{xxbt}
+                           </if>
+                          <if test="content!=null">
+                            and content like #{content}
+                          </if>
+                          <if test="deptcxdj=='ds'">
+                          and FBR_DEPT_PARENT='13706000000'
+                           </if>
+                          <if test="deptcxdj=='qx'">
+                           and (FBR_DEPT_PARENT='13706000000' or FBR_DEPT_PARENT= #{fbrDeptParent})
+                           </if>
+                           <if test="deptcxdj=='gl'">
+                           and FBR_DEPT_PARENT= #{fbrDeptParent}
+                           </if>
+                          <if test="deptcxdj=='fj'">
+                           and (FBR_DEPT_PARENT=(select PARENT_ID from SYS_DEPT where ID = #{fbrDeptParent}) or FBR_DEPT_PARENT= #{fbrDeptParent})
+                           </if>
+                          <if test="ksrq!=null">
+                            and FBSJQUERY  >= #{ksrq}
+                           </if>
+                           <if test="jzrq!=null">
+                           <![CDATA[  and FBSJQUERY  <= #{jzrq}
+                             ]]>
+                           </if>
+                          
+		              </where>		              	              		            
+		             ORDER BY FBSJ DESC
+		             LIMIT 0,8
+	</select>
+  <select id="selectGztzMxByPageall" parameterType="org.ytgs.xzjx.model.XzjxGztz" resultMap="BaseResultMap">	
+		
+		SELECT t.*
+		             FROM XZJX_GZTZ T	
+		              <where>
+		                  <if test="xxbt!=null">
+                            xxbt  like #{xxbt}
+                           </if>
+                          <if test="content!=null">
+                            and content like #{content}
+                          </if>
+                          <if test="deptcxdj=='ds'">
+                          and FBR_DEPT_PARENT='13706000000'
+                             </if>
+                           <if test="deptcxdj=='qx'">
+                            and (FBR_DEPT_PARENT='13706000000' or FBR_DEPT_PARENT= #{fbrDeptParent})
+                             </if>
+                            <if test="deptcxdj=='gl'">
+                           and FBR_DEPT_PARENT= #{fbrDeptParent}
+                           </if>
+                            <if test="deptcxdj=='fj'">
+                           and (FBR_DEPT_PARENT=(select PARENT_ID from SYS_DEPT where ID = #{fbrDeptParent}) or FBR_DEPT_PARENT= #{fbrDeptParent})
+                          </if>
+                          <if test="ksrq!=null">
+                            and FBSJQUERY  >= #{ksrq}
+                           </if>
+                           <if test="jzrq!=null">
+                           <![CDATA[  and FBSJQUERY  <= #{jzrq}
+                             ]]>
+                           </if>
+                          
+		              </where>		              	              		            
+		             ORDER BY FBSJ DESC
+LIMIT #{page} ,#{limit}
+	</select>
+	
+	<select id="getGztzMx" parameterType="org.ytgs.xzjx.model.XzjxGztz" resultMap="BaseResultMap">	
+		SELECT t.*  
+         FROM XZJX_GZTZ T
+		              <where>
+		      <if test="xxbt!=null">
+               xxbt=#{xxbt}
+              </if>
+             <if test="content!=null">
+               and content like #{content}
+             </if>
+             
+		              </where>                                       
+        ORDER BY LRSJ DESC
+	</select>
+	<select id="selectGztzviewMxCount" parameterType="org.ytgs.xzjx.model.XzjxGztz" resultType="int">
+		select count(*)
+		from XZJX_GZTZ	
+		<where>
+             <if test="xxbt!=null">
+	             xxbt like #{xxbt}
+              </if>
+	         <if test="content!=null">
+		         and content like #{content}
+	          </if>
+	          <if test="deptcxdj=='ds'">
+              and FBR_DEPT_PARENT='13706000000'
+              </if>
+               <if test="deptcxdj=='qx'">
+                and FBR_DEPT_PARENT='13706000000' or FBR_DEPT_PARENT= #{fbrDeptParent}
+               </if>
+               <if test="deptcxdj=='gl'">
+               and FBR_DEPT_PARENT= #{fbrDeptParent}
+               </if>
+               <if test="deptcxdj=='fj'">
+                 and (FBR_DEPT_PARENT=(select PARENT_ID from SYS_DEPT where ID = #{fbrDeptParent}) or FBR_DEPT_PARENT= #{fbrDeptParent})
+               </if>
+               <if test="ksrq!=null">
+                  and FBSJQUERY  >= #{ksrq}
+              </if>
+              <if test="jzrq!=null">
+                <![CDATA[ and FBSJQUERY  <= #{jzrq}
+                ]]>
+              </if>                   
+          </where>	 	              		
+	</select>
+  <sql id="Base_Column_List" >
+    ID, XXBT, FBR_DM, FBR_MC, FBSJ, FBBM_DM, FBBM_MC, FBJG_DM, FBJG_MC, FBFW, SAVEPATH, 
+    ATTACHNAME, ATTACHNAMEUPLOAD, FBR_DEPT_MC, FBR_DEPT_DM, FBSJQUERY, FBR_DEPT_SX, FBR_DEPT_PARENT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    *
+    from XZJX_GZTZ
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="getdeptinfo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select DEPT_NAME AS FBR_DEPT_MC,DEPTSTANDALONE AS FBR_DEPT_SX, PARENT_ID AS FBR_DEPT_PARENT
+    from SYS_DEPT
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from XZJX_GZTZ
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.ytgs.xzjx.model.XzjxGztz" >
+    insert into XZJX_GZTZ (ID, XXBT, FBR_DM, 
+      FBR_MC, FBSJ, FBBM_DM, 
+      FBBM_MC, FBJG_DM, FBJG_MC, 
+      FBFW, SAVEPATH, ATTACHNAME, 
+      ATTACHNAMEUPLOAD, FBR_DEPT_MC, FBR_DEPT_DM, 
+      FBSJQUERY, FBR_DEPT_SX, FBR_DEPT_PARENT, 
+      CONTENT)
+    values (#{id,jdbcType=VARCHAR}, #{xxbt,jdbcType=VARCHAR}, #{fbrDm,jdbcType=VARCHAR}, 
+      #{fbrMc,jdbcType=VARCHAR}, #{fbsj,jdbcType=VARCHAR}, #{fbbmDm,jdbcType=VARCHAR}, 
+      #{fbbmMc,jdbcType=VARCHAR}, #{fbjgDm,jdbcType=VARCHAR}, #{fbjgMc,jdbcType=VARCHAR}, 
+      #{fbfw,jdbcType=VARCHAR}, #{savepath,jdbcType=VARCHAR}, #{attachname,jdbcType=VARCHAR}, 
+      #{attachnameupload,jdbcType=VARCHAR}, #{fbrDeptMc,jdbcType=VARCHAR}, #{fbrDeptDm,jdbcType=VARCHAR}, 
+      #{fbsjquery,jdbcType=VARCHAR}, #{fbrDeptSx,jdbcType=CHAR}, #{fbrDeptParent,jdbcType=VARCHAR}, 
+      #{content,jdbcType=CLOB})
+  </insert>
+  <insert id="insertSelective" parameterType="org.ytgs.xzjx.model.XzjxGztz" >
+    insert into XZJX_GZTZ
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fbrDeptSx!=null">
+        FBR_DEPT_SX,
+      </if>
+      <if test="fbrDeptParent!=null">
+        FBR_DEPT_PARENT,
+      </if>
+      <if test="fbrDeptDm!=null">
+        FBR_DEPT_DM,
+      </if>
+       <if test="fbrDeptMc!=null">
+        FBR_DEPT_MC,
+      </if>
+      <if test="content != null" >
+        CONTENT,
+      </if>
+      <if test="savepath != null" >
+        SAVEPATH,
+      </if>
+      <if test="attachname != null" >
+        ATTACHNAME,
+      </if>
+      <if test="attachnameupload != null" >
+        ATTACHNAMEUPLOAD,
+      </if>
+      <if test="xxbt != null" >
+        XXBT,
+      </if>
+      <if test="fbrDm != null" >
+        FBR_DM,
+      </if>
+      <if test="fbrMc != null" >
+        FBR_MC,
+      </if>
+      <if test="fbsj != null" >
+        FBSJ,
+      </if>
+      <if test="fbbmDm != null" >
+        FBBM_DM,
+      </if>
+      <if test="fbbmMc != null" >
+        FBBM_MC,
+      </if>
+      <if test="fbjgDm != null" >
+        FBJG_DM,
+      </if>
+      <if test="fbjgMc != null" >
+        FBJG_MC,
+      </if>
+      <if test="fbfw != null" >
+        FBFW,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fbrDeptSx!=null">
+        #{fbrDeptSx,jdbcType=VARCHAR},
+      </if>
+      <if test="fbrDeptParent!=null">
+        #{fbrDeptParent,jdbcType=VARCHAR},
+      </if>
+      <if test="fbrDeptDm!=null">
+        #{fbrDeptDm,jdbcType=VARCHAR},
+      </if>
+      <if test="fbrDeptMc!=null">
+        #{fbrDeptMc,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+         #{content,jdbcType=CLOB},
+      </if>
+      <if test="savepath != null" >
+         #{savepath,jdbcType=VARCHAR},
+      </if>
+      <if test="attachname != null" >
+         #{attachname,jdbcType=VARCHAR},
+      </if>
+      <if test="attachnameupload != null" >
+         #{attachnameupload,jdbcType=VARCHAR},
+      </if>
+      <if test="xxbt != null" >
+        #{xxbt,jdbcType=VARCHAR},
+      </if>
+      <if test="fbrDm != null" >
+        #{fbrDm,jdbcType=VARCHAR},
+      </if>
+      <if test="fbrMc != null" >
+        #{fbrMc,jdbcType=VARCHAR},
+      </if>
+      <if test="fbsj != null" >
+        #{fbsj,jdbcType=VARCHAR},
+      </if>
+      <if test="fbbmDm != null" >
+        #{fbbmDm,jdbcType=VARCHAR},
+      </if>
+      <if test="fbbmMc != null" >
+        #{fbbmMc,jdbcType=VARCHAR},
+      </if>
+      <if test="fbjgDm != null" >
+        #{fbjgDm,jdbcType=VARCHAR},
+      </if>
+      <if test="fbjgMc != null" >
+        #{fbjgMc,jdbcType=VARCHAR},
+      </if>
+      <if test="fbfw != null" >
+        #{fbfw,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.ytgs.xzjx.model.XzjxGztz" >
+    update XZJX_GZTZ
+    <set >
+      <if test="xxbt != null" >
+        XXBT = #{xxbt,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+       <if test="savepath != null" >
+        SAVEPATH=#{savepath,jdbcType=VARCHAR},
+      </if>
+      <if test="attachname != null" >
+         attachname=#{attachname,jdbcType=VARCHAR},
+      </if>
+      <if test="attachnameupload != null" >
+         attachnameupload=#{attachnameupload,jdbcType=VARCHAR},
+      </if>
+      <if test="fbrDm != null" >
+        FBR_DM = #{fbrDm,jdbcType=VARCHAR},
+      </if>
+      <if test="fbrMc != null" >
+        FBR_MC = #{fbrMc,jdbcType=VARCHAR},
+      </if>
+      <if test="fbsj != null" >
+        FBSJ = #{fbsj,jdbcType=VARCHAR},
+      </if>
+      <if test="fbbmDm != null" >
+        FBBM_DM = #{fbbmDm,jdbcType=VARCHAR},
+      </if>
+      <if test="fbbmMc != null" >
+        FBBM_MC = #{fbbmMc,jdbcType=VARCHAR},
+      </if>
+      <if test="fbjgDm != null" >
+        FBJG_DM = #{fbjgDm,jdbcType=VARCHAR},
+      </if>
+      <if test="fbjgMc != null" >
+        FBJG_MC = #{fbjgMc,jdbcType=VARCHAR},
+      </if>
+      <if test="fbfw != null" >
+        FBFW = #{fbfw,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.ytgs.xzjx.model.XzjxGztz" >
+    update XZJX_GZTZ
+    set XXBT = #{xxbt,jdbcType=VARCHAR},
+      CONTENT = #{content,jdbcType=VARCHAR},
+      SAVEPATH=#{savepath,jdbcType=VARCHAR},
+      ATTACHNAME=#{attachname,jdbcType=VARCHAR},
+      ATTACHNAMEUPLOAD=#{attachnameupload,jdbcType=VARCHAR},
+      FBR_DM = #{fbrDm,jdbcType=VARCHAR},
+      FBR_MC = #{fbrMc,jdbcType=VARCHAR},
+      FBSJ = #{fbsj,jdbcType=VARCHAR},
+      FBBM_DM = #{fbbmDm,jdbcType=VARCHAR},
+      FBBM_MC = #{fbbmMc,jdbcType=VARCHAR},
+      FBJG_DM = #{fbjgDm,jdbcType=VARCHAR},
+      FBJG_MC = #{fbjgMc,jdbcType=VARCHAR},
+      FBFW = #{fbfw,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectNoticeListByPage" parameterType="org.ytgs.xzjx.model.XzjxGztz" resultMap="BaseResultMap">	
+		SELECT t.*
+		             FROM XZJX_GZTZ T	
+		              <where>
+		                  <if test="xxbt!=null">
+                           ( xxbt  like #{xxbt} or content like #{xxbt})
+                           </if>
+                         
+                          <if test="fbrDm!=null">
+                            and FBR_DM = #{fbrDm}
+                          </if>
+                          <if test="ksrq!=null">
+                            and FBSJQUERY  >= #{ksrq}
+                           </if>
+                           <if test="jzrq!=null">
+                           <![CDATA[  and FBSJQUERY  <= #{jzrq}
+                             ]]>
+                           </if>
+                          
+		              </where>		              	              		            
+		             ORDER BY FBSJ DESC
+LIMIT #{page} ,#{limit}
+	</select>
+		<select id="selectNoticeListCount" parameterType="org.ytgs.xzjx.model.XzjxGztz" resultType="int">
+		select count(*)
+		from XZJX_GZTZ	
+		<where>
+              <if test="xxbt!=null">
+                           ( xxbt  like #{xxbt} or content like #{xxbt})
+                           </if>
+	          <if test="fbrDm!=null">
+                   and FBR_DM = #{fbrDm}
+              </if>
+               <if test="ksrq!=null">
+                  and FBSJQUERY  >= #{ksrq}
+              </if>
+              <if test="jzrq!=null">
+                <![CDATA[ and FBSJQUERY  <= #{jzrq}
+                ]]>
+              </if>                   
+          </where>	 	              		
+	</select>
+</mapper>

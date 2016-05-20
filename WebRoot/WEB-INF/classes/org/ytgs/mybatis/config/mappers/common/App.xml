@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须为含有id中指示的方法的接口 -->
+<mapper namespace="org.ytgs.common.dao.AppDao">
+  	<resultMap type="SysAuthorities" id="appMap">
+		<id column="id" property="authorityId" />
+		<result column="catagory_name" property="authorityDesc" />	
+	</resultMap>
+	<resultMap type="int" id="idList">
+		<result column="app_id" property="id" />
+	</resultMap>
+	<select id="getAllAppByRoleId" resultMap="appMap">
+		 select ID,CATAGORY_NAME  
+		 from 
+           ( select * from PORTAL_CATAGORY 
+                  where ID not in 
+                (select distinct PARENT_ID from PORTAL_CATAGORY where PARENT_ID is not null)) t   
+        where ID not in (select distinct APP_ID from SYS_ROLE_APP  where ROLE_ID=#{roleId} )
+		
+	</select>
+	<insert id="insertRoleApp" parameterType="SysRolesAuthorities" useGeneratedKeys ="true" keyColumn="ID" keyProperty="id">
+		insert into SYS_ROLE_APP ( ROLE_ID,APP_ID) values (#{roleId},#{authorityId})
+	</insert>
+	<delete id="deleteRoleApp" parameterType="int" >
+		delete from SYS_ROLE_APP where ID = #{id}
+	</delete>
+   <select id="getAppList" resultMap="idList">
+	select app_id  from SYS_ROLE_APP t 
+      where t.role_id in 
+             (select distinct b.role_id  
+              from SYS_USERS_ROLES b where b.USER_ID=#{userId})
+     </select>
+     <delete id="deleteRoleAppByRoleAndAppId"  >
+		delete from SYS_ROLE_APP where ROLE_ID = #{roleId} and APP_ID=#{appId}
+	</delete>
+</mapper>

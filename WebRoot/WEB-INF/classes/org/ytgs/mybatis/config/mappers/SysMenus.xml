@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须为含有id中指示的方法的接口 -->
+<mapper namespace="org.ytgs.system.dao.SysMenusDao">
+
+	<resultMap type="SysMenus" id="sysMenusMap">
+		<id column="MENU_ID" property="menuId" />
+		<result column="PARENT_ID" property="parentId" />
+		<result column="GROUP_ID" property="groupId" />
+		<result column="AUTHORITY_ID" property="authorityId" />
+		<result column="DISPLAY" property="display" />
+		<result column="SHORTCUT" property="shortcut" />
+		<result column="DESCRIPTION" property="description" />
+		<result column="DISPINDEX" property="dispindex" />
+		<result column="ICONURI" property="iconuri" />
+	</resultMap>
+	<resultMap type="SysMenuResourceDto" id="sysMenuResourceResultMap">
+		<id column="MENU_ID" property="menuId" />
+		<result column="PARENT_ID" property="parentId" />
+		<result column="DISPLAY" property="display" />
+		<result column="RESOURCE_STRING" property="resourceString" />
+		<result column="DESCRIPTION" property="description" />
+		<result column="DISPINDEX" property="dispindex" />
+		<result column="ICONURI" property="iconuri" />
+	</resultMap>
+	<resultMap type="TreeNode" id="treeNodeMap">
+		<id column="MENU_ID" property="id" />
+		<result column="PARENT_ID" property="parentId" />
+		<result column="DISPLAY" property="text" />
+		<result column="AUTHORITY_ID" property="cls" />		
+	</resultMap>
+	<resultMap type="int" id="sysIntList">
+		<result column="PARENT_ID" property="parentId" />
+	</resultMap>
+	<resultMap type="int" id="menuIdList">
+		<result column="MENU_ID" property="menuId" />
+	</resultMap>
+	<select id="getMenuBranchById" parameterType="int" resultMap="sysMenuResourceResultMap">	
+	    select distinct e.menu_id,e.parent_id,e.display
+	     from  SYS_MENUS e 
+	     left join SYS_MENUS t2 on t2.parent_id=e.menu_id
+	     left join SYS_MENUS t3 on t3.parent_id=t2.menu_id
+	     left join SYS_MENUS t4 on t4.parent_id=t3.menu_id
+	     left join SYS_MENUS t5 on t5.parent_id=t4.menu_id
+	     left join SYS_MENUS t6 on t6.parent_id=t5.menu_id
+	    where  e.menu_id=#{menuId} or t2.menu_id=#{menuId} 
+	      or t3.menu_id=#{menuId} or  t4.menu_id=#{menuId} 
+	      or t5.menu_id=#{menuId} or  t6.menu_id=#{menuId}
+	    order by e.menu_id desc
+	</select>
+	<select id="getMenuLeafByUserAccount" parameterType="java.lang.String" resultMap="menuIdList">	
+	   select distinct e.menu_id
+        from SYS_AUTHORITIES a, SYS_ROLES_AUTHORITIES b, SYS_USERS_ROLES c,
+		SYS_USERS d,SYS_MENUS e
+		where a.authority_id = b.authority_id and b.role_id = c.role_id
+         and e.authority_id=a.authority_id
+		and c.user_id = d.user_id and d.user_account = #{userAccount}
+	</select>
+	
+	<select id="getChildByParentId" parameterType="int" resultMap="sysMenusMap">
+	    SELECT * FROM SYS_MENUS WHERE PARENT_ID=#{parentId} ORDER BY MENU_ID	
+	</select>
+	<select id="getChildrenByParentId" parameterType="int" resultMap="treeNodeMap">
+	    SELECT * FROM SYS_MENUS WHERE PARENT_ID=#{parentId} ORDER BY MENU_ID	
+	</select>
+	<select id="getParentId" resultMap="sysIntList">
+	    SELECT PARENT_ID FROM SYS_MENUS Group By PARENT_ID Order By PARENT_ID	
+	</select>
+	<select id="getUserMenuResourcesString" parameterType="java.lang.String" resultMap="sysMenuResourceResultMap">
+		select e.menu_id,e.parent_id,e.display,b.resource_string 
+		from SYS_AUTHORITIES_RESOURCES a, 
+		     SYS_RESOURCES b, 
+		     SYS_AUTHORITIES c,
+		     SYS_MENUS e 
+		where a.resource_id = b.resource_id 
+		and	  a.authority_id=c.authority_id 
+		and   e.authority_id= c.authority_id 
+		and   c.Authority_name=#{auth}
+	</select>
+	
+	<select id="getMenusByUserAccount" parameterType="java.lang.String" resultMap="sysMenuResourceResultMap">
+		select distinct e.menu_id,e.parent_id,e.display, e.authority_id,
+                (select a.resource_string
+                   from SYS_RESOURCES a, SYS_AUTHORITIES_RESOURCES b
+                  where b.authority_id = e.authority_id
+                    and b.resource_id = a.resource_id) as resource_string
+				  from SYS_MENUS e
+LEFT JOIN SYS_MENUS t2 on t2.PARENT_ID=e.MENU_ID
+LEFT JOIN SYS_MENUS t3 on t3.PARENT_ID=t2.MENU_ID
+LEFT JOIN SYS_MENUS t4 on t4.PARENT_ID=t3.MENU_ID
+LEFT JOIN SYS_MENUS t5 on t5.PARENT_ID=t4.MENU_ID
+LEFT JOIN SYS_MENUS t6 on t6.PARENT_ID=t5.MENU_ID
+				 where e.menu_id in
+			            (select distinct e.menu_id
+			               from SYS_AUTHORITIES       a,
+			                    SYS_ROLES_AUTHORITIES b,
+			                    SYS_USERS_ROLES       c,
+			                    SYS_USERS             d,
+			                    SYS_MENUS             e
+			              where a.authority_id = b.authority_id
+			                and b.role_id = c.role_id
+			                and c.user_id = d.user_id
+			                and a.authority_id = e.authority_id
+			                and d.user_account = #{userAccount})
+					
+or t2.menu_id in
+			            (select distinct e.menu_id
+			               from SYS_AUTHORITIES       a,
+			                    SYS_ROLES_AUTHORITIES b,
+			                    SYS_USERS_ROLES       c,
+			                    SYS_USERS             d,
+			                    SYS_MENUS             e
+			              where a.authority_id = b.authority_id
+			                and b.role_id = c.role_id
+			                and c.user_id = d.user_id
+			                and a.authority_id = e.authority_id
+			                and d.user_account = #{userAccount})
+or t3.menu_id in
+			            (select distinct e.menu_id
+			               from SYS_AUTHORITIES       a,
+			                    SYS_ROLES_AUTHORITIES b,
+			                    SYS_USERS_ROLES       c,
+			                    SYS_USERS             d,
+			                    SYS_MENUS             e
+			              where a.authority_id = b.authority_id
+			                and b.role_id = c.role_id
+			                and c.user_id = d.user_id
+			                and a.authority_id = e.authority_id
+			                and d.user_account = #{userAccount})
+or t4.menu_id in
+			            (select distinct e.menu_id
+			               from SYS_AUTHORITIES       a,
+			                    SYS_ROLES_AUTHORITIES b,
+			                    SYS_USERS_ROLES       c,
+			                    SYS_USERS             d,
+			                    SYS_MENUS             e
+			              where a.authority_id = b.authority_id
+			                and b.role_id = c.role_id
+			                and c.user_id = d.user_id
+			                and a.authority_id = e.authority_id
+			                and d.user_account = #{userAccount})
+or t5.menu_id in
+			            (select distinct e.menu_id
+			               from SYS_AUTHORITIES       a,
+			                    SYS_ROLES_AUTHORITIES b,
+			                    SYS_USERS_ROLES       c,
+			                    SYS_USERS             d,
+			                    SYS_MENUS             e
+			              where a.authority_id = b.authority_id
+			                and b.role_id = c.role_id
+			                and c.user_id = d.user_id
+			                and a.authority_id = e.authority_id
+			                and d.user_account = #{userAccount})
+or t6.menu_id in
+			            (select distinct e.menu_id
+			               from SYS_AUTHORITIES       a,
+			                    SYS_ROLES_AUTHORITIES b,
+			                    SYS_USERS_ROLES       c,
+			                    SYS_USERS             d,
+			                    SYS_MENUS             e
+			              where a.authority_id = b.authority_id
+			                and b.role_id = c.role_id
+			                and c.user_id = d.user_id
+			                and a.authority_id = e.authority_id
+			                and d.user_account = #{userAccount})
+
+					order by e.menu_id
+	</select>
+	<select id="getMenuResource" parameterType="int" resultType="String">
+		select a.resource_string 
+		from SYS_RESOURCES a, SYS_AUTHORITIES_RESOURCES b, SYS_MENUS c
+		where a.resource_id = b.resource_id
+		and c.authority_id  = b.authority_id
+		and c.menu_id       = #{menuId}
+	</select>
+	<insert id ="insertNode" parameterType="SysMenus" useGeneratedKeys ="true" keyColumn="MENU_ID" keyProperty="menuId">
+		insert into SYS_MENUS (PARENT_ID,DISPLAY,DESCRIPTION,AUTHORITY_ID) 
+		   values(#{parentId},#{text},#{description},#{authorityId})
+	</insert>
+	<delete id="deleteNode" parameterType="int" >
+		delete from SYS_MENUS where menu_id = #{menuId}
+	</delete>
+	<update id="updateNode" parameterType="SysMenus">
+		update SYS_MENUS set DISPLAY=#{text},DESCRIPTION=#{description},AUTHORITY_ID=#{authorityId} where MENU_ID=#{menuId}
+	</update>
+</mapper>

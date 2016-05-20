@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须为含有id中指示的方法的接口 -->
+<mapper namespace="org.ytgs.portal.common.dao.PortalCatagoryDao">
+    <resultMap type="Catagory" id="catagoryMap">
+		<id column="ID" property="id" />
+		<result column="PARENT_ID" property="parentId" />
+		<result column="CATAGORY_NAME" property="catagoryName" />
+		<result column="CATAGORY_TYPE" property="catagoryType" />
+		<result column="CATAGORY_URL" property="catagoryUrl" />
+		<result column="PUB_TYPE" property="pubType" />
+		<result column="PUB_URL" property="pubUrl" />
+		<result column="PUB_TIME" property="pubTime" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="CATAGORY_DESC" property="catagoryDesc" />
+		<result column="JF_XX" property="jfXx" />
+		<result column="JF_TP" property="jfTp" />
+		<result column="BZ_QY" property="bzQy" />
+		<result column="BZ_SH" property="bzSh" />
+		<result column="BZ_TJ" property="bzTj" />
+		<result column="PAGE_MODAL" property="pageModal" />
+		<result column="ARTICLE_MODAL" property="articleModal" />
+		<result column="DEPT_ID" property="deptId" />
+		<result column="DEPT_NAME" property="deptName" />
+		<result column="CATAGORY_PIC" property="catagoryPic" />
+	</resultMap>
+	<select id="getTemplateByCatagroyId" parameterType="int" resultMap="catagoryMap">	
+	    select PAGE_MODAL,ARTICLE_MODAL,CATAGORY_NAME,CATAGORY_PIC,CATAGORY_URL
+		from   PORTAL_CATAGORY 
+		where  ID = #{id}
+	</select>
+	<select id="getColPathById" parameterType="int" resultType="String">	
+	    select CATAGORY_URL
+		from   PORTAL_CATAGORY 
+		where  ID = #{id}
+	</select>
+	<select id="getTopicPathById" parameterType="int" resultMap="catagoryMap">	
+	   select distinct e.ID,e.PAGE_MODAL,e.ARTICLE_MODAL,e.CATAGORY_NAME,e.CATAGORY_URL,e.CATAGORY_DESC,e.PUB_TYPE,e.PUB_URL 
+	    from  PORTAL_CATAGORY e 
+		LEFT JOIN PORTAL_CATAGORY t2 on t2.PARENT_ID=e.ID
+		LEFT JOIN PORTAL_CATAGORY t3 on t3.PARENT_ID=t2.ID
+		LEFT JOIN PORTAL_CATAGORY t4 on t4.PARENT_ID=t3.ID
+		LEFT JOIN PORTAL_CATAGORY t5 on t5.PARENT_ID=t4.ID
+		LEFT JOIN PORTAL_CATAGORY t6 on t6.PARENT_ID=t5.ID
+        where  e.catagory_type='C' and ( e.id=#{catagoryId} or t2.id=#{catagoryId} or t3.id=#{catagoryId} or t4.id=#{catagoryId} or t5.id=#{catagoryId} or t6.id=#{catagoryId} )
+        LIMIT 0 ,1 
+	</select>
+	<select id="getCatagoryListByIdArray" resultMap="catagoryMap">	
+	    select ID,PAGE_MODAL,ARTICLE_MODAL,CATAGORY_NAME,CATAGORY_URL,CATAGORY_DESC ,PUB_TYPE,PUB_URL
+	    from  PORTAL_CATAGORY e 
+        where e.id in 
+        <foreach item="idArray" index="index" collection="array" open="(" separator="," close=")">
+        	#{idArray} 
+        </foreach>
+        order by e.catagory_desc
+	</select>
+	<select id="getSubIdListByTopicId" parameterType="int" resultMap="catagoryMap">	
+	    SELECT * FROM (
+			select distinct e.ID,e.PAGE_MODAL,e.ARTICLE_MODAL,e.CATAGORY_NAME,e.CATAGORY_DESC,e.CATAGORY_URL,e.CATAGORY_TYPE ,e.PUB_TYPE,e.PUB_URL
+			      	from  PORTAL_CATAGORY e    
+			          LEFT JOIN PORTAL_CATAGORY t2 on t2.ID=e.PARENT_ID
+			LEFT JOIN PORTAL_CATAGORY t3 on t3.ID=t2.PARENT_ID
+			LEFT JOIN PORTAL_CATAGORY t4 on t4.ID=t3.PARENT_ID
+			LEFT JOIN PORTAL_CATAGORY t5 on t5.ID=t4.PARENT_ID
+			LEFT JOIN PORTAL_CATAGORY t6 on t6.ID=t5.PARENT_ID
+			where  e.id=#{catagoryId} or t2.id=#{catagoryId} or t3.id=#{catagoryId} or t4.id=#{catagoryId} or t5.id=#{catagoryId} or t6.id=#{catagoryId} 
+        ) T
+        WHERE T.CATAGORY_TYPE='M'
+	</select>
+	<select id="getNavigateByCatagoryId" parameterType="int" resultMap="catagoryMap">
+		select distinct e.id,e.parent_id,e.catagory_name
+		from  PORTAL_CATAGORY e 
+		LEFT JOIN PORTAL_CATAGORY t2 on t2.PARENT_ID=e.ID
+		LEFT JOIN PORTAL_CATAGORY t3 on t3.PARENT_ID=t2.ID
+		LEFT JOIN PORTAL_CATAGORY t4 on t4.PARENT_ID=t3.ID
+		LEFT JOIN PORTAL_CATAGORY t5 on t5.PARENT_ID=t4.ID
+		LEFT JOIN PORTAL_CATAGORY t6 on t6.PARENT_ID=t5.ID
+		where e.id=#{catagoryId} or t2.id=#{catagoryId} or t3.id=#{catagoryId} or t4.id=#{catagoryId} or t5.id=#{catagoryId} or t6.id=#{catagoryId} 
+	</select>
+	<select id="getTopicCatagory"  resultMap="catagoryMap">
+	select e.CATAGORY_URL,e.CATAGORY_PIC
+			    from  PORTAL_CATAGORY e 
+			    where CATAGORY_PIC is not NULL
+			    and CATAGORY_PIC!='null'
+			    and catagory_type='C' 
+			    and ID!=#{indexId}
+			    LIMIT 0,#{topicTopNum}
+	</select>
+	<select id="getTopicPicCatagory"  resultMap="catagoryMap">
+	select distinct e.id,e.parent_id,e.catagory_name,e.catagory_type,e.catagory_pic,e.catagory_url
+		from  PORTAL_CATAGORY e    
+		LEFT JOIN PORTAL_CATAGORY t2 on t2.ID=e.PARENT_ID
+		LEFT JOIN PORTAL_CATAGORY t3 on t3.ID=t2.PARENT_ID
+		LEFT JOIN PORTAL_CATAGORY t4 on t4.ID=t3.PARENT_ID
+		LEFT JOIN PORTAL_CATAGORY t5 on t5.ID=t4.PARENT_ID
+		LEFT JOIN PORTAL_CATAGORY t6 on t6.ID=t5.PARENT_ID
+		where  e.catagory_type='C' 
+		and e.id!=#{catagoryId} 
+		and e.catagory_pic!='null'
+		and (e.id=#{catagoryId} or t2.id=#{catagoryId} or t3.id=#{catagoryId} or t4.id=#{catagoryId} or t5.id=#{catagoryId} or t6.id=#{catagoryId})
+	</select>
+	<resultMap type="int" id="CatagoryStringList">
+		<result column="PARENT_ID" property="parentId" />
+	</resultMap>	
+	<select id="selectCatagory" resultMap="catagoryMap">
+		select * from PORTAL_CATAGORY
+	</select>
+	
+	<insert id ="insertCatagory" parameterType="Catagory" useGeneratedKeys ="true" keyColumn="ID" keyProperty="id">
+		insert into PORTAL_CATAGORY 
+		  (PARENT_ID,CATAGORY_NAME,CATAGORY_TYPE,CATAGORY_URL,PUB_TYPE,PUB_TIME,CATAGORY_DESC,JF_XX,JF_TP,BZ_QY,BZ_SH,BZ_TJ,PAGE_MODAL,ARTICLE_MODAL,DEPT_ID,DEPT_NAME,CATAGORY_PIC,PUB_URL) 
+  values(#{parentId},#{catagoryName},#{catagoryType},#{catagoryUrl},#{pubType},now(),#{catagoryDesc},#{jfXx},#{jfTp},#{bzQy},#{bzSh},#{bzTj},#{pageModal},#{articleModal},#{deptId},#{deptName},#{catagoryPic},#{pubUrl})
+	</insert>
+	
+	<delete id="deleteCatagory" parameterType="int" >
+		delete from PORTAL_CATAGORY  where ID = #{id}
+	</delete>
+	<update id="updateCatagory" parameterType="Catagory">
+		update PORTAL_CATAGORY set 
+		 CATAGORY_NAME=#{catagoryName},
+		 CATAGORY_TYPE=#{catagoryType},
+		 CATAGORY_URL=#{catagoryUrl},
+		 PUB_TYPE=#{pubType},
+		 PUB_URL=#{pubUrl},
+		 UPDATE_TIME=now(),
+		 CATAGORY_DESC=#{catagoryDesc},
+		 JF_XX=#{jfXx},
+		 JF_TP=#{jfTp},
+		 BZ_QY=#{bzQy},
+		 BZ_SH=#{bzSh},
+		 BZ_TJ=#{bzTj},
+		 PAGE_MODAL=#{pageModal},
+		 ARTICLE_MODAL=#{articleModal},
+		 DEPT_ID=#{deptId},
+		 DEPT_NAME=#{deptName},
+		 CATAGORY_PIC=#{catagoryPic}
+		 where ID = #{id}
+	</update>
+	<select id="getCatagoryById" parameterType="int" resultMap="catagoryMap">	
+	    select *
+		from  PORTAL_CATAGORY
+		where ID != 1 AND ID = #{id}
+	</select>
+	<select id="getCatagoryByParentId" parameterType="int" resultMap="catagoryMap">	
+	    select *
+		from  PORTAL_CATAGORY
+		where PARENT_ID = #{id}
+	</select>	
+	<select id="getModuleChildByParentId" parameterType="int" resultMap="catagoryMap">	
+	    select *
+		from  PORTAL_CATAGORY
+		where PARENT_ID  = #{parentId}
+	</select>	
+	<select id="getParentId" resultMap="CatagoryStringList">
+	    SELECT PARENT_ID FROM PORTAL_CATAGORY Group By PARENT_ID Order By PARENT_ID	
+	</select>	
+	<select id="getCardCataroyByCatagroyId" parameterType="int" resultMap="catagoryMap">		    
+	     select n.id,n.catagory_name,m.catagory_url
+	      from
+           (select f.ID as id,f.CATAGORY_NAME as catagory_name
+              from PORTAL_CATAGORY f,
+               (select c.parent_id as id
+                 from PORTAL_CATAGORY c,
+                  (select t.parent_id as p_id
+                      from PORTAL_CATAGORY t 
+                   where t.id=#{catagoryId}) d 
+                where c.id=d.p_id) e
+           where f.parent_id=e.id) n,PORTAL_CATAGORY m
+         where m.catagory_name='电子名片' and m.parent_id=n.id   
+	</select>
+</mapper>

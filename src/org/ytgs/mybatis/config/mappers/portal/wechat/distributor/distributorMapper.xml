@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ytgs.portal.wechat.distributor.dao.DistributorDao">
+	<!-- 插入分销商信息 -->
+	<insert id="insertVendorInf"
+		parameterType="org.ytgs.portal.wechat.distributor.model.Distributor">
+		insert into
+		distributor_users(USER_ID,PARENT_ID,PHONE,WECHAT_ACCOUNT,REAL_NAME,LEVEL)
+		VALUES(#{userId},#{parentId},#{phone},#{wechatNum},#{realName},#{level})
+	</insert>
+</mapper>

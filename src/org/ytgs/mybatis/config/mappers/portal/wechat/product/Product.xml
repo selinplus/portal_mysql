@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须为含有id中指示的方法的接口 -->
+<mapper namespace="org.ytgs.portal.wechat.product.dao.ProductDao">
+	<!-- 基本的映射 -->
+	<resultMap type="ProductInfo" id="productBaseMap">
+		<id column="ID" property="id" />
+		<result column="ITEM" property="item" />
+		<result column="P_DESC" property="desc" />
+		<result column="CO" property="co" />
+		<result column="OVERPACK" property="overpack" />
+		<result column="VARITY" property="varity" />
+		<result column="DELIVERY_MODE" property="deliveryMode" />
+		<result column="DELIVERY_RANGE" property="deliveryRange" />
+		<result column="KG" property="kg" />
+		<result column="STORAGE_MODE" property="storageMode" />
+		<result column="REMARKS" property="remarks" />
+		<result column="STATE" property="state" />
+		<result column="ORIGIN_PRICE" property="originPrice" />
+		<result column="COMMON_DISCOUNT" property="commonDiscount" />
+		<result column="COMMON_PRICE" property="commonPrice" />
+		<result column="MEMBER_DISCOUNT" property="memberDiscount" />
+		<result column="MEMBER_PRICE" property="memberPrice" />
+		<result column="AUDIT_ID" property="auditId" />
+		<result column="AUDIT_TIME" property="auditTime" />
+	</resultMap>
+	<!-- 完全映射 -->
+	<resultMap type="ProductInfo" id="productMap" extends="productBaseMap">
+		<collection property="productStocks" ofType="ProductStock">
+			<id column="PS_ID" property="id" />
+			<result column="PRODUCT_ID" property="productId" />
+			<result column="ORIGIN_QUANTITY" property="originQuantity" />
+			<result column="DRAW_QUANTITY" property="drawQuantity" />
+			<result column="RESIDUAL_QUANTITY" property="residualQuantity" />
+			<result column="STOCK_QUANTITY" property="stockQuantity" />
+			<result column="SALES_VOLUME" property="salesVolume" />
+			<result column="PS_AUDIT_ID" property="auditId" />
+			<result column="PS_AUDIT_TIME" property="auditTime" />
+			<result column="PS_AUDIT_DESC" property="auditDesc" />
+		</collection>		
+	</resultMap>
+	<sql id="Base_Column_List" >
+    id,item,p_desc,co,overpack,varity,delivery_mode,delivery_range,kg,storage_mode,remarks,origin_price,common_discount,common_price,member_price,member_discount,audit_time
+  	</sql>
+	<!-- 查询所有的商品 -->
+	<select id="selectAll" resultMap="productMap">
+		select * from product_info
+	</select>
+	<!-- 查询首页显示的商品 -->
+	<select id="selectIndexProducts" resultMap="productMap">
+		select
+		<include refid="Base_Column_List" /> 
+		from product_info where state=1 limit 0,4
+	</select>
+	<!-- 查询商品的基本信息以及销量信息 -->
+	<select id="selectProducts" parameterType="ProductInfo" resultMap="productMap">
+		select a.*,b.id as ps_id,b.product_id,b.origin_quantity,b.draw_quantity,b.residual_quantity,b.stock_quantity,b.sales_volume,b.audit_id as ps_audit_id,b.audit_time as ps_audit_time,b.audit_desc as ps_audit_desc from (select
+		<include refid="Base_Column_List" /> 
+		from product_info
+		<where> 
+		<if test="id != null" >       
+		 id=#{id} 
+		 </if>
+		<if test="state != null" >       
+		 and state = #{state} 
+		 </if>
+		 <if test="auditId != null" >       
+		 and  audit_id =#{auditId} 
+		 </if>
+		 <if test="item != null" >       
+		 and  item like #{item} 
+		 </if>
+		</where> 
+		<if test="type == 1" >       
+		  order by audit_time desc
+		 </if>		
+		 <if test="type == 4" >       
+		  order by common_price asc
+		 </if>
+		 <if test="type == 5" >       
+		  order by common_price desc
+		 </if>) a  left join  (select * from product_stock where id in (select max(id) from product_stock group by product_id)) b on a.id = b.product_id  
+		   <if test="type == 2" >       
+		  order by sales_volume asc
+		 </if>
+		 <if test="type == 3" >       
+		  order by sales_volume desc
+		 </if>		
+	</select>
+	<!-- 根据id查询商品的基本信息 -->
+	<select id="selectProductById" parameterType="ProductInfo" resultMap="productBaseMap">
+		select
+		<include refid="Base_Column_List" />
+		 from product_info 
+		 <where> 
+		<if test="id != null" >       
+		 id=#{id} 
+		 </if>
+		<if test="state != null" >       
+		 and state = #{state} 
+		 </if>
+		 </where>
+	</select>
+	<!--  -->
+	<select id="selectEvaluationByPage" resultMap="productBaseMap">
+		select
+		<include refid="Base_Column_List" />
+		 from product_info 
+		 <where> 
+		<if test="id != null" >       
+		 id=#{id} 
+		 </if>
+		<if test="state != null" >       
+		 and state = #{state} 
+		 </if>
+		 </where>
+	</select>
+</mapper>

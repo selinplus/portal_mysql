@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须为含有id中指示的方法的接口 -->
+<mapper namespace="org.ytgs.portal.common.dao.PortalContentDao">
+	<resultMap type="Content" id="contentMap">
+		<id column="ID" property="id" />
+		<result column="TITLE" property="title" />
+		<result column="SOURCE" property="source" />
+		<result column="CONTENT" property="content" />
+		<result column="DISPLAY_TIME" property="createTime" />
+		<result column="HTML_URL" property="htmlUrl" />
+		<result column="TOPIC_PIC" property="topicPic" />
+		<result column="BZ_ZD" property="bzZd" />
+		<result column="BZ_TOPICPIC" property="bzTopicPic" />
+		<result column="INTRODUCTION" property="introduction" />
+		<result column="DEPT_DESC" property="deptDesc" />
+	</resultMap>
+	<insert id="insertContent" parameterType="Content"
+		useGeneratedKeys="true" keyColumn="ID" keyProperty="id">
+		insert into
+		PORTAL_CONTENT
+		(TITLE,CONTENT,HTML_URL,SOURCE,DISPLAY_TIME,CATAGORY_ID,TOPIC_PIC,BZ_ZD,BZ_TOPICPIC,INTRODUCTION)
+		values(#{title},#{content,jdbcType=CLOB},#{htmlUrl},#{source},
+		<if test="displayTime!=null">
+		#{displayTime},
+		</if>
+		<if test="displayTime==null">
+		now(),
+		</if>
+		#{catagoryId},#{topicPic},#{bzZd},#{bzTopicPic},#{introduction})
+	</insert>
+
+	<delete id="deleteContent" parameterType="int">
+		delete from
+		PORTAL_CONTENT where ID = #{id}
+	</delete>
+	<update id="updateContent" parameterType="Content">
+		update PORTAL_CONTENT
+		set   TITLE=#{title},
+			  CONTENT=#{content,jdbcType=CLOB},
+			  SOURCE=#{source},
+			  HTML_URL=#{htmlUrl},
+			  DISPLAY_TIME=#{displayTime},
+			  TOPIC_PIC=#{topicPic},
+			  BZ_ZD=#{bzZd},
+			  BZ_TOPICPIC=#{bzTopicPic},
+			  INTRODUCTION =#{introduction}		
+		where ID = #{id}
+	</update>
+	<select id="getContentById" parameterType="int" resultMap="contentMap">
+		select *
+		from PORTAL_CONTENT
+		where ID = #{id}
+	</select>
+	<select id="getArtListByCatagoryId" parameterType="int"
+		resultMap="contentMap">
+		select *
+		from PORTAL_CONTENT
+		where CATAGORY_ID = #{id}
+		order by DISPLAY_TIME desc
+	</select>
+	<select id="getArtCountByCatagoryId" parameterType="int"
+		resultType="int">
+		select count(*)
+		from PORTAL_CONTENT
+		where CATAGORY_ID = #{id}
+	</select>
+	<select id="getArtPageListByCatagoryIdPageNum" resultMap="contentMap">	
+		SELECT *
+		              FROM PORTAL_CONTENT T
+		             WHERE T.CATAGORY_ID = #{catagoryId}
+		             ORDER BY T.BZ_ZD,T.DISPLAY_TIME DESC 
+		             LIMIT #{page},#{limit}
+	</select>
+	<update id="setBzZd" parameterType="int">
+		update PORTAL_CONTENT
+		set BZ_ZD = null
+		where CATAGORY_ID = #{catagoryId} and BZ_ZD='on'
+	</update>
+	<select id="getTopArtListByCatagoryId" resultMap="contentMap">	
+	SELECT t.*
+		              FROM PORTAL_CONTENT T
+		             WHERE T.CATAGORY_ID = #{subId}
+		             ORDER BY T.BZ_ZD,T.DISPLAY_TIME DESC
+		             LIMIT 0 ,#{topicTopNum} 	
+	</select>
+	<select id="getTopPicListByCatagoryId" resultMap="contentMap">	
+	SELECT t.*
+		              FROM PORTAL_CONTENT T
+		             WHERE T.CATAGORY_ID = #{subId} AND T.TOPIC_PIC IS NOT NULL
+		             ORDER BY T.BZ_ZD,T.DISPLAY_TIME DESC
+		             LIMIT 0 ,#{topicTopNum}
+	</select>	
+	<select id="getColIdByContentId" parameterType="int"
+		resultType="int">
+		select CATAGORY_ID
+		from PORTAL_CONTENT
+		where id = #{id}
+	</select>
+	<select id="getPicNewsByTime"  resultMap="contentMap">
+	select TITLE,HTML_URL,TOPIC_PIC
+						     from PORTAL_CONTENT
+					    	where CATAGORY_ID in 
+						      <foreach item="item" index="index" collection="idArray" open="(" separator="," close=")">
+					        	 #{item}
+					          </foreach>
+				              and  TOPIC_PIC IS NOT NULL
+						  order by DISPLAY_TIME desc
+	   		LIMIT 0 ,#{topicTopNum}
+	</select>
+	<select id="getPicNewByCatagoryId"  parameterType="int" resultMap="contentMap">
+        select ID,TITLE,HTML_URL,TOPIC_PIC,SOURCE,CONTENT 
+        from PORTAL_CONTENT 
+          where DISPLAY_TIME=
+                  (select max(DISPLAY_TIME) from PORTAL_CONTENT t WHERE CATAGORY_ID=#{catagoryId}  AND  TOPIC_PIC IS NOT NULL)
+	</select>
+	<select id="getPicNewsByCatagoryId"  parameterType="int" resultMap="contentMap">
+       select TITLE,HTML_URL,TOPIC_PIC
+						     from PORTAL_CONTENT
+					    	where CATAGORY_ID =#{catagoryId} 
+					    	and  TOPIC_PIC IS NOT NULL
+						  order by DISPLAY_TIME desc
+						  LIMIT 0 ,#{topicTopNum}
+	</select>
+	<select id="getSssrByCatagoryId"  parameterType="int" resultMap="contentMap">
+        select ID,TITLE,HTML_URL,TOPIC_PIC,SOURCE,CONTENT 
+        from PORTAL_CONTENT 
+          where DISPLAY_TIME=
+                  (select max(DISPLAY_TIME) from PORTAL_CONTENT t WHERE CATAGORY_ID=#{catagoryId} )
+	</select>
+	<select id="getContentsByCatagoryId"  resultMap="contentMap">
+		select ID,TITLE,HTML_URL,TOPIC_PIC,SOURCE
+						     from PORTAL_CONTENT
+					    	where CATAGORY_ID =#{catagoryId}				     
+						  order by DISPLAY_TIME desc
+						  LIMIT 0 ,#{topicTopNum}
+	</select>
+	<!-- 龙口王维纲站内搜索 start-->
+	<select id="getArtPageListByKeyWordPageNum" parameterType="String" resultMap="contentMap">
+	SELECT t.*
+		              FROM PORTAL_CONTENT T
+		             WHERE T.TITLE LIKE CONCAT('%', #{keyWord},'%') 
+		             or T.CONTENT LIKE  CONCAT('%', #{keyWord},'%') 
+		             ORDER BY T.CREATE_TIME DESC
+LIMIT 0 ,#{topicTopNum}
+	</select>
+	<select id="getElecCardHtmlUrlByTitleAndTopicId" resultMap="contentMap">
+	SELECT t.*
+		              FROM PORTAL_CONTENT T
+		             WHERE T.TITLE =#{name} 
+		             and catagory_id in (select id from PORTAL_CATAGORY where parent_id=#{id})
+LIMIT 0,1
+	</select>
+	<select id="getTotalCountByKeyWord" parameterType="String" resultType="int">	
+	     SELECT count(*)
+		              FROM PORTAL_CONTENT T
+		             WHERE T.TITLE LIKE CONCAT('%', #{keyWord},'%') 
+		             or T.CONTENT LIKE  CONCAT('%', #{keyWord},'%') 
+	</select>
+	<!-- 龙口王维纲站内搜索 end-->
+</mapper>

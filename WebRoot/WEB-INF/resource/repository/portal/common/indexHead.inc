@@ -1,0 +1,120 @@
+var baseUrl='http://76.68.16.156/res/repository/portal/col/';
+var base='http://76.68.16.156/';
+var indexUrl='home/index.html';
+//政务公开
+var zwgkGgsz='http://gongkai.sd-n-tax.gov.cn/xxgk/jcms_files/jcms1/web6/site/col/col163/index.html';
+var zwgkLdzl=baseUrl+'col20140424102145_232/index.html';
+var zwgkJhzj='http://gongkai.sd-n-tax.gov.cn/xxgk/jcms_files/jcms1/web6/site/col/col1366/index.html';
+var zwgkRsrm='http://gongkai.sd-n-tax.gov.cn/xxgk/jcms_files/jcms1/web6/site/col/col1405/index.html';
+var zwgkSrtj='http://gongkai.sd-n-tax.gov.cn/xxgk/jcms_files/jcms1/web6/site/col/col1400/index.html';
+var zwgkXzfwUrl='col20140408110649_878/index.html';
+var zwgkGztzUrl='portal/notice/noticeIndex?catagoryId=54';
+//新闻中心
+var  xwzxZjyw='http://130.9.1.168/n69512/n354544/index.html';
+var xwzxSjyw='http://76.16.16.88/col/col38878/index.html';
+var xwzxDsjUrl='col20140328113926_882/index.html';
+var xwzxSzywUrl='col20140408155321_599/index.html';
+var xwzxXwsjUrl='col20140528154612_13/index.html';
+var xwzxSjxwUrl='col20140328120225_245/index.html';
+var xwzxXjswUrl='col20140403151523_305/index.html';
+//业务研究
+var ywyjLlyj='col20140328113305_384/index.html';
+var ywyjJyclUrl='col20140408113323_437/index.html';
+var ywyjGsqkUrl='col20140408161556_688/index.html';
+var ywyjGsdtUrl='http://76.16.16.88/col/col38879/index.html';
+var ywyjMtbdUrl='col20140408155105_433/index.html';
+var ywyjDzmpUrl='col20140429095149_235/index.html'
+var ywyjFgk='http://www.sd-n-tax.gov.cn/col/col44604/index.html';
+//互动交流
+var hdjlJzxx='http://hudong.sd-n-tax.gov.cn/front/mailwrite_sd.jsp?sysid=001&groupid=0036&sysid1=001&sysid2=004&sysid3=005&groupid1=0036&groupid2=0478&groupid3=0475&sysid4=003&groupid4=0036';
+var hdjlFtzb='http://yantai.sd-n-tax.gov.cn/col/col50616/index.html';
+var hdjlWsdc='http://yantai.sd-n-tax.gov.cn/col/col31533/index.html';
+var hdjlFxbg='http://76.16.16.88/col/col46019/index.html';
+//学习园地
+var xxydJtsh='col20140331131208_881/index.html';
+var xxydCzxs='col20140331131409_891/index.html';
+var xxydSswh='col20140331131341_56/index.html';
+//专题专栏
+var ztzlQzlx='col0004/index.html';
+var ztzlCfxd='col20140416112456_697/index.html';
+
+//荣誉之窗
+var ryzc='col20140513135510_761/index.html';
+//友情链接
+var jbytgsj='http://76.68.16.53:8080/gsj/gsjweb/index.jsp';
+var gjswzj='http://130.9.1.168';
+var sdsgsj='http://76.16.16.88';
+
+document.writeln('        <ul style="display: inline; " class="navli">');
+document.writeln('               <li class="li">');
+document.writeln('                  <a style="border: 0px;" href="'+baseUrl+indexUrl+'">网站首页</a>');
+document.writeln('             </li>');
+document.writeln('              <li class="li">');
+document.writeln('                  <a href="#">政务公开</a>');
+document.writeln('                 <ul class="subnav hidden">');
+document.writeln('                      <li><a href="'+zwgkGgsz+'" target=_blank>机构设置</a></li>');
+document.writeln('                      <li><a href="'+zwgkLdzl+'" target=_blank>领导专栏 </a></li>');
+document.writeln('                      <li><a href="'+zwgkJhzj+'" target=_blank>计划总结</a></li>');
+document.writeln('                      <li><a href="'+zwgkRsrm+'" target=_blank>人事任免</a></li>');
+document.writeln('                      <li><a href="'+base+zwgkGztzUrl+'">工作通知 </a></li>');
+document.writeln('                      <li><a href="'+baseUrl+zwgkXzfwUrl+'">行政发文</a></li>');
+document.writeln('                      <li><a href="'+zwgkSrtj+'" target=_blank>收入统计</a></li>');
+document.writeln('                      <li><a href="'+baseUrl+xwzxDsjUrl+'">大事记  </a></li>');
+document.writeln('                  </ul>');
+document.writeln('              </li>');
+document.writeln('              <li class="li">');
+document.writeln('                  <a href="#">新闻中心</a>');
+document.writeln('                  <ul class="subnav hidden">');
+document.writeln('                      <li><a href="'+xwzxZjyw+'" target=_blank>总局要闻</a></li>');
+document.writeln('                      <li><a href="'+xwzxSjyw+'" target=_blank>省局要闻 </a></li>');
+document.writeln('                      <li><a href="'+baseUrl+xwzxSjxwUrl+'">市局新闻</a></li>');
+document.writeln('                      <li><a href="'+baseUrl+xwzxXjswUrl+'">县局新闻</a></li>');
+document.writeln('                      <li><a href="'+baseUrl+xwzxSzywUrl+'">时政要闻 </a></li>');
+document.writeln('                      <li><a href="'+baseUrl+xwzxXwsjUrl+'">新闻视角</a></li>');
+document.writeln('                  </ul>');
+ document.writeln('             </li>');
+document.writeln('              <li class="li">');
+document.writeln('                  <a href="#">业务研究</a>');
+document.writeln('                  <ul class="subnav hidden">');
+//document.writeln('                      <li><a href="'+baseUrl+ywyjDzmpUrl+'">电子名片</a></li>');
+document.writeln('                      <li><a href="'+baseUrl+ywyjGsqkUrl+'">国税情况</a></li>');
+document.writeln('                      <li><a href="'+ywyjGsdtUrl+'" target=_blank>国税动态</a></li>');
+document.writeln('                      <li><a href="'+baseUrl+ywyjLlyj+'">理论研究 </a></li>');
+document.writeln('                      <li><a href="'+baseUrl+ywyjJyclUrl+'"> 经验材料 </a></li>');
+document.writeln('                      <li><a href="'+baseUrl+ywyjMtbdUrl+'">媒体报道</a></li>');
+document.writeln('                      <li><a href="'+ywyjFgk+'" target=_blank>法规库 </a></li>');
+document.writeln('                  </ul>');
+document.writeln('              </li>');
+document.writeln('              <li class="li">');
+document.writeln('                  <a href="#">专题专栏</a>');
+document.writeln('                  <ul class="subnav hidden">');
+document.writeln('                      <li><a href="'+baseUrl+ztzlQzlx+'" target=_blank>群众路线</a></li>');
+document.writeln('                      <li><a href="'+baseUrl+ztzlCfxd+'" target=_blank>春风行动</a></li>');
+document.writeln('                  </ul>');
+document.writeln('              </li>');
+document.writeln('              <li class="li">');
+document.writeln('                  <a href="#">互动交流 </a>');
+document.writeln('                  <ul class="subnav hidden">');
+document.writeln('                      <li><a href="'+hdjlFtzb+'" target=_blank>访谈直播 </a></li>');
+document.writeln('                      <li><a href="'+hdjlWsdc+'" target=_blank>网上调查 </a></li>');
+document.writeln('                      <li><a href="'+hdjlFxbg+'" target=_blank>分析报告 </a></li>');
+document.writeln('                  </ul>');
+document.writeln('              </li>');
+document.writeln('              <li class="li">');
+document.writeln('                  <a href="#">学习园地</a>');
+document.writeln('                  <ul class="subnav hidden">');
+document.writeln('                      <li><a href="'+baseUrl+xxydJtsh+'">家庭与生活</a></li>');
+document.writeln('                      <li><a href="'+baseUrl+xxydCzxs+'">创作与欣赏 </a></li>');
+document.writeln('                      <li><a href="'+baseUrl+xxydSswh+'">税收与文化 </a></li>');
+document.writeln('                  </ul>');
+document.writeln('              </li>');
+document.writeln('              <li class="li">');
+document.writeln('                  <a style="border-right: 2px solid #565050;" href="#">友情链接</a>');
+document.writeln('                  <ul class="subnav hidden">');
+document.writeln('                      <li><a href="'+gjswzj+'" target=_blank>国家税务总局</a></li>');
+document.writeln('                      <li><a href="'+sdsgsj+'" target=_blank>山东省国税局 </a></li>');
+document.writeln('                      <li><a href="'+jbytgsj+'" target=_blank>旧版网站 </a></li>');
+document.writeln('                  </ul>');
+document.writeln('              </li>');
+document.writeln('          </ul>');
+document.writeln('<div style="display: inline;">&nbsp;&nbsp;&nbsp;&nbsp;<a target=_blank href="'+gjswzj+'"><img width=105 height=40 src="'+base+'/res/repository/portal/col/home/images/swzj.png"></a></div>');

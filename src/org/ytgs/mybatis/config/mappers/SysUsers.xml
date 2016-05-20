@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须为含有id中指示的方法的接口 -->
+<mapper namespace="org.ytgs.security.dao.SysUsersDao">
+	
+	<resultMap type="SysUsers" id="sysUsersMap">
+		<id column="USER_ID" property="userId" />
+		<result column="USER_ACCOUNT" property="userAccount" />
+		<result column="USER_NAME" property="userName" />
+		<result column="USER_PASSWORD" property="userPassword" />
+		<result column="USER_DESC" property="userDesc" />
+		<result column="USER_DEPT" property="userDept" />
+		<result column="USER_DUTY" property="userDuty" />
+		<result column="SUB_SYSTEM" property="subSystem" />
+		<result column="ENABLED" property="enabled" />
+		<result column="ISSYS" property="issys" />
+		<result column="ONLINE" property="online" />
+		<result column="USER_MOBILE" property="userMobile" />
+		<result column="USER_DESKTOP" property="userDesktop" />
+		<result column="USER_ORDER" property="userOrder" />
+	</resultMap>
+	
+	<select id="selectSysUsers" parameterType="String" resultMap="sysUsersMap">
+		select * from SYS_USERS where USER_ID = #{userId}
+	</select>
+	<select id="getUserByAccount" parameterType="String" resultMap="sysUsersMap">
+		select * from SYS_USERS where USER_ACCOUNT = #{userAccount}
+	</select>
+	<insert id="insertSysUsers" parameterType="SysUsers">
+		insert into
+		SYS_USERS (USER_ID, USER_ACCOUNT,
+		USER_NAME,USER_PASSWORD,USER_DESC,ENABLED,ISSYS,USER_DEPT,USER_DUTY,SUB_SYSTEM,
+		USER_MOBILE)
+		values (
+		#{userId}, #{userAccount},
+		#{userName},MD5(#{userPassword}),#{userDesc},#{enabled},#{issys},#{userDept},#{userDuty},#{subSystem},
+		#{userMobile}
+		)
+	</insert>
+	<resultMap type="java.lang.String" id="SysAuthoritiesResultMap">   
+        <result column="AUTHORITY_NAME" property="authorityName"/> 
+    </resultMap>   
+	<select id="loadUserAuthorities" parameterType="String"
+		resultMap="SysAuthoritiesResultMap">
+		select a.authority_name
+		from SYS_AUTHORITIES a, SYS_ROLES_AUTHORITIES b, SYS_USERS_ROLES c,
+		SYS_USERS d
+		where a.authority_id = b.authority_id and b.role_id = c.role_id
+		and c.user_id = d.user_id and d.user_account = #{userName}
+	</select>
+	<select id="findByUserAccount" parameterType="String"
+		resultMap="sysUsersMap">
+		select * from SYS_USERS where user_account=#{userAccount}
+	</select>
+	<delete id="deleteSysUsers" parameterType="int">
+		delete from SYS_USERS where USER_ID = #{userId}
+	</delete>
+	<update id="updateSysUser" parameterType="SysUsers">
+		update
+		SYS_USERS set USER_PASSWORD=MD5(#{userPassword})
+		where user_account=#{userAccount}
+	
+	</update>
+	<!-- 用户基本信息表的增删改查 -->
+	<select id="selectUsers" parameterType="String" resultMap="sysUsersMap">
+		select * from SYS_USERS where USER_ID = #{userId}
+	</select>
+	<select id="selectAllUsers"  resultMap="sysUsersMap"  parameterType="SysUsers" >
+	  
+        select u.USER_ID,u.USER_ACCOUNT,u.USER_NAME,u.USER_PASSWORD,u.USER_DESC,
+u.USER_DEPT,u.USER_DUTY,u.SUB_SYSTEM,u.ENABLED,u.ISSYS,
+u.USER_MOBILE,dept.dept_name as USER_DESKTOP,u.USER_ORDER
+                  from SYS_USERS u, SYS_DEPT dept          
+		             
+		<where> 
+		 u.user_dept=dept.id 
+		<if test="userDept!= null" >       
+		 and u.USER_DEPT=#{userDept} 
+		 </if>
+		<if test="userName!= null" >       
+		 AND u.USER_NAME = #{userName} 
+		 </if>
+		 <if test="userAccount!= null" >       
+		 AND  u.USER_ACCOUNT =#{userAccount} 
+		 </if>
+		</where>  
+		
+		order by u.USER_ORDER LIMIT #{page} ,#{limit} 
+	</select>
+	
+	<delete id="deleteUsers" parameterType="String">
+		delete from SYS_USERS where USER_ID = #{userId}
+	</delete>
+	
+	<insert id="insertUsers" parameterType="SysUsers" useGeneratedKeys ="true" keyColumn="USER_ID" keyProperty="userId">
+		insert into
+		SYS_USERS (USER_ID,USER_ACCOUNT,
+		USER_NAME,USER_PASSWORD,USER_DESC,ENABLED,ISSYS,USER_DEPT,USER_DUTY,SUB_SYSTEM,
+		USER_MOBILE)
+		values (
+		#{userId},#{userAccount},
+		#{userName},MD5(#{userPassword}),#{userDesc},#{enabled},#{issys},#{userDept},#{userDuty},#{subSystem}
+		,#{userMobile}
+		)
+	</insert>
+	
+	<update id="updateUsers" parameterType="SysUsers">
+	 update SYS_USERS
+    <set >
+      <if test="userAccount != null" >
+        USER_ACCOUNT = #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        USER_PASSWORD = MD5(#{userPassword,jdbcType=VARCHAR}),
+      </if>
+      <if test="userDesc != null" >
+        USER_DESC = #{userDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        ENABLED = #{enabled,jdbcType=CHAR},
+      </if>
+      <if test="issys != null" >
+        ISSYS = #{issys,jdbcType=CHAR},
+      </if>
+      <if test="userDept != null" >
+        USER_DEPT = #{userDept,jdbcType=VARCHAR},
+      </if>
+      <if test="userMobile != null" >
+        USER_MOBILE = #{userMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="userOrder != null" >
+        USER_ORDER = #{userOrder,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where USER_ID = #{userId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateUserStatus">
+		update
+	    SYS_USERS set 
+	    ISONLINE = #{status},
+	    LAST_LOGIN_TIME = now()
+	    where user_id=#{userId}
+	</update>
+	<select id="onlineUsers" resultType="String">
+		select count(1) as ols from SYS_USERS where isonline='YES'
+	</select>
+	<select id="selectAllUsersCount"  resultType="int"  parameterType="SysUsers" >
+		select count(1) from SYS_USERS 
+		<where> 
+		<if test="userDept!= null" >       
+		 USER_DEPT=#{userDept} 
+		 </if>
+		<if test="userName!= null" >       
+		 AND USER_NAME = #{userName} 
+		 </if>
+		 <if test="userAccount!= null" >       
+		 AND  USER_ACCOUNT =#{userAccount} 
+		 </if>
+		</where> 
+	</select>
+</mapper>

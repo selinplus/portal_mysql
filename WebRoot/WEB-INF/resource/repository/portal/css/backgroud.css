@@ -1,0 +1,14 @@
+@charset "utf-8";
+body{ background: #efeeed;}
+.background{ background: #398fca; }
+.cbackground{background:white;}
+.fontcolor{color: white; font-size: 12px;}
+.border-color{ border-color: #398fca;  }
+.fontcolor1{ color: #398fca;}
+.fontcolor2{color:#3c90cc}
+.loginbackground{background: #52606e;}
+.limargin{margin-bottom:8px;}
+.liuserbackground{background:url(../images/l_user.jpg) left no-repeat}
+.lipwdbackground{background:url(../images/l_pwd.jpg) left no-repeat}
+.breadbackground{background:#e7e5e2;}
+.bckspanbackground{background:#398fca top left no-repeat;}

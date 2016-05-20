@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须为含有id中指示的方法的接口 -->
+<mapper namespace="org.ytgs.portal.wechat.product.dao.ProductEvaluationDao">
+	<!-- 基本的映射 -->
+	<resultMap type="ProductEvaluation" id="evaluationBaseMap">
+		<id column="ID" property="id" />
+		<result column="ITEM" property="userId" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+    id
+  	</sql>
+	
+	<select id="selectEvaluationByPage" resultMap="evaluationBaseMap">
+		select
+		<include refid="Base_Column_List" />
+		 from product_evaluation 
+		 <where> 
+		<if test="pi.id != null" >       
+		 productId=#{pi.id} 
+		 </if>
+		 </where>
+	</select>
+</mapper>

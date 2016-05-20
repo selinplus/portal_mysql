@@ -1,0 +1,206 @@
+<!-- 购物车页面 -->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="css/__main.css" rel="stylesheet">
+    <link href="css/bootstrapValidator.min.css" rel="stylesheet">
+
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrapValidator.min.js"></script>
+
+    <title>购物车</title>
+</head>
+<!-- 默认使用小号字体 -->
+<body class="small body-gray">
+<!-- 顶部的导航栏 -->
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-nav-bottom">
+            <li>
+                <a href="#">
+                    <span><i  class="fa fa-toggle-off fa-2x color-success"></i></span>
+                    <span>全选</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span><i class="fa fa-trash-o fa-2x color-gray"></i></span>
+                    <span>删除</span>
+                </a>
+            </li>
+            <li>
+                <a href="./order.html">
+                    <span><i class="fa fa-money fa-2x color-primary"></i></span>
+                    <span>结算</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 购物车的商品 -->
+<div class="shopping-products body-white">
+    <!-- 没有商品 -->
+    <div class="no-product center-block hidden">
+        <i class="fa fa-shopping-cart fa-5x"></i>
+        <p >购物车饿瘪了&gt;_&lt;</p>
+        <span class="text-muted">赶快挑选宝贝吧</span>
+        <a href="./productsAll.html">
+            <button class="btn btn-primary">去逛逛</button>
+        </a>
+    </div>
+    <!-- 有商品，显示商品列表 -->
+    <div class="products-list">
+        <form class="" role="form" action="" method="post">
+            <div class="container">
+                <!-- 某个商品 -->
+                <div class="row">
+                    <div class="col-xs-1">
+                        <!-- 垂直居中对齐 -->
+                        <h6>
+                            <input type="checkbox" class="checkbox">
+                        </h6>
+                    </div>
+                    <div class="col-xs-2">
+                        <img src="./images/product1.jpg">
+                    </div>
+                    <div class="col-xs-5">
+                        <h6>商品名称1</h6>
+                    </div>
+                    <div class="col-xs-4">
+                        <span>现价</span><p>原价</p>
+                        <!-- 商品数量 -->
+                        <div class="">
+                            <button type="button" class="btn btn-default btn-sm">-</button>
+                            <input type="text">
+                            <button type="button" class="btn btn-default btn-sm">+</button>
+                        </div>
+                    </div>
+                </div>
+                <hr class="row">
+                <!-- 某个商品 -->
+                <div class="row">
+                    <div class="col-xs-1">
+                        <!-- 垂直居中对齐 -->
+                        <h6>
+                            <input type="checkbox" class="checkbox">
+                        </h6>
+                    </div>
+                    <div class="col-xs-2">
+                        <img src="./images/product1.jpg">
+                    </div>
+                    <div class="col-xs-5">
+                        <h6>商品名称2</h6>
+                    </div>
+                    <div class="col-xs-4">
+                        <span>现价</span><p>原价</p>
+                        <!-- 商品数量 -->
+                        <div class="">
+                            <button type="button" class="btn btn-default btn-sm">-</button>
+                            <input type="text">
+                            <button type="button" class="btn btn-default btn-sm">+</button>
+                        </div>
+                    </div>
+                </div>
+                <hr class="row">
+                <!-- 某个商品 -->
+                <div class="row">
+                    <div class="col-xs-1">
+                        <!-- 垂直居中对齐 -->
+                        <h6>
+                            <input type="checkbox" class="checkbox">
+                        </h6>
+                    </div>
+                    <div class="col-xs-2">
+                        <img src="./images/product1.jpg">
+                    </div>
+                    <div class="col-xs-5">
+                        <h6>商品名称3</h6>
+                    </div>
+                    <div class="col-xs-4">
+                        <span>现价</span><p>原价</p>
+                        <!-- 商品数量 -->
+                        <div class="">
+                            <button type="button" class="btn btn-default btn-sm">-</button>
+                            <input type="text">
+                            <button type="button" class="btn btn-default btn-sm">+</button>
+                        </div>
+                    </div>
+                </div>
+                <hr class="row">
+                <!-- 某个商品 -->
+                <div class="row">
+                    <div class="col-xs-1">
+                        <!-- 垂直居中对齐 -->
+                        <h6>
+                            <input type="checkbox" class="checkbox">
+                        </h6>
+                    </div>
+                    <div class="col-xs-2">
+                        <img src="./images/product1.jpg">
+                    </div>
+                    <div class="col-xs-5">
+                        <h6>商品名称4</h6>
+                    </div>
+                    <div class="col-xs-4">
+                        <span>现价</span><p>原价</p>
+                        <!-- 商品数量 -->
+                        <div class="">
+                            <button type="button" class="btn btn-default btn-sm">-</button>
+                            <input type="text">
+                            <button type="button" class="btn btn-default btn-sm">+</button>
+                        </div>
+                    </div>
+                </div>
+                <hr class="row">
+                <!-- 结算内容 -->
+                <div class="row">
+                    <div class="col-xs-10 col-xs-offset-2">
+                        <h5>
+                            共<i id="totalNumber">4</i>件商品，
+                            合计:<i id="totalPrice" class="fa fa-rmb">214</i>
+                            <br>
+                            <i class="fa fa-bell-o font-sm">&nbsp;注意：不含运费</i>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 底部的导航栏 -->
+<div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+    <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-nav-bottom">
+            <li>
+                <a href="./index.html">
+                    <span class="fa fa-home fa-2x"></span>
+                    <span>首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="./vendor.html">
+                    <span class="fa fa-sitemap fa-2x"></span>
+                    <span>分销商</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="#">
+                    <span class="fa fa-shopping-cart fa-2x"></span>
+                    <span>购物车</span>
+                </a>
+            </li>
+            <li>
+                <a href="./me.html">
+                    <span class="fa fa-user fa-2x"></span>
+                    <span>我</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

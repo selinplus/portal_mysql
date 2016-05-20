@@ -1,0 +1,119 @@
+<!-- 全部商品 -->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="css/__main.css" rel="stylesheet">
+    <link href="css/bootstrapValidator.min.css" rel="stylesheet">
+
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrapValidator.min.js"></script>
+    <script>
+        //改变布局样式
+        function changeLayout(obj){
+            var btn = $(obj);
+            btn.children().toggleClass('fa-table');
+            btn.children().toggleClass('fa-list');
+            var divObj = $('#product-thumb');
+            divObj.toggleClass('product-thumb-list');
+            divObj.toggleClass('product-thumb-table');
+        }
+    </script>
+    <title>商品列表</title>
+</head>
+<!-- 默认使用小号字体 -->
+<body class="small body-white">
+<!-- 分类查询按钮 -->
+<div class="type-search-btn-group">
+    <div class="btn-group">
+        <button class="btn btn-default btn-sm">新品</button>
+        <button class="btn btn-default btn-sm active">销量&nbsp;<i class="fa fa-caret-down"></i></button>
+        <button class="btn btn-default btn-sm">价格&nbsp;<i class="fa fa-caret-up"></i></button>
+        <button class="btn btn-default btn-sm" onclick="changeLayout(this);"><i class="fa fa-list"></i></button>
+    </div>
+</div>
+<!-- 全部商品展示页面 -->
+<div id="product-thumb" class="product-thumb-list">
+    <span class="top-space">&nbsp;</span>
+    <div>
+        <img src="./images/product1.jpg">
+        <div>
+            <span><a href="./productDetail.html">商品名称1</a></span>
+            <div><span>现价</span><p>原价</p></div>
+            <div><span>折扣</span>销量</div>
+        </div>
+    </div>
+    <div>
+        <img src="./images/product1.jpg">
+        <div>
+            <span><a href="./productDetail.html">商品名称2</a></span>
+            <div><span>现价</span><p>原价</p></div>
+            <div><span>折扣</span>销量</div>
+        </div>
+    </div>
+    <div>
+        <img src="./images/product1.jpg">
+        <div>
+            <span><a href="./productDetail.html">商品名称3</a></span>
+            <div><span>现价</span><p>原价</p></div>
+            <div><span>折扣</span>销量</div>
+        </div>
+    </div>
+    <div>
+        <img src="./images/product1.jpg">
+        <div>
+            <span><a href="./productDetail.html">商品名称4</a></span>
+            <div><span>现价</span><p>原价</p></div>
+            <div><span>折扣</span>销量</div>
+        </div>
+    </div>
+    <div>
+        <img src="./images/product1.jpg">
+        <div>
+            <span><a href="./productDetail.html">商品名称5</a></span>
+            <div><span>现价</span><p>原价</p></div>
+            <div><span>折扣</span>销量</div>
+        </div>
+    </div>
+    <span class="bottom-space">&nbsp;</span>
+</div>
+<!-- 底部的导航栏 -->
+<div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+    <div class="navbar-collapse">
+        <ul class="nav navbar-nav navbar-nav-bottom">
+            <li>
+                <a href="./index.html">
+                    <span class="fa fa-home fa-2x">
+                    </span>
+                    <span>首页</span>
+                </a>
+            </li>
+            <li  class="active">
+                <a href="#">
+                    <span class="fa fa-apple fa-2x">
+                    </span>
+                    <span>商品</span>
+                </a>
+            </li>
+            <li>
+                <a href="./shoppingCart.html">
+                    <span class="fa fa-shopping-cart fa-2x">
+                    </span>
+                    <span>购物车</span>
+                </a>
+            </li>
+            <li>
+                <a href="./me.html">
+                    <span class="fa fa-user fa-2x">
+                    </span>
+                    <span>我</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

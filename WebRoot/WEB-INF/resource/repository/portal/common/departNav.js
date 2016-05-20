@@ -1,0 +1,21 @@
+var baseUrl='http://76.68.16.156/res/repository/portal/col/';
+var bgsUrl='col20140506163452_531/index.html';
+
+document.writeln('<ul>                                 ');
+document.writeln('<li> <a href="'+baseUrl+bgsUrl+'" target="_blank">办公室</a> </li>');
+document.writeln(' <li><a href="#" target="_blank">贷劳管理</a> </li>  ');
+document.writeln(' <li><a href="#" target="_blank">所得税管理</a> </li>');
+document.writeln(' <li><a href="#" target="_blank">管理工作</a> </li>  ');
+document.writeln(' <li><a href="#" target="_blank">纳税服务</a> </li>  ');
+document.writeln(' <li><a href="#" target="_blank">机关财务</a> </li>  ');
+document.writeln(' <li><a href="#" target="_blank">收入核算</a> </li>  ');
+document.writeln(' <li><a href="#" target="_blank">出口退税</a> </li>  ');
+document.writeln(' <li><a href="#" target="_blank">进出口税收</a> </li>');
+document.writeln(' <li><a href="#" target="_blank">大国税收</a> </li>  ');
+document.writeln(' <li><a href="#" target="_blank">人事管理</a> </li>  ');
+document.writeln(' <li><a href="#" target="_blank">教育培训</a> </li>  ');
+document.writeln(' <li><a href="#" target="_blank">检查视窗</a> </li>  ');
+document.writeln(' <li><a href="#" target="_blank">党建在线</a> </li>  ');
+document.writeln(' <li><a href="#" target="_blank">稽查天地</a> </li>  ');
+document.writeln(' <li><a href="#" target="_blank">信息管理</a> </li>  ');
+document.writeln(' </ul>                               ');

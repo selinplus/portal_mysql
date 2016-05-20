@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="css/__main.css" rel="stylesheet">
+    <link href="css/bootstrapValidator.min.css" rel="stylesheet">
+
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrapValidator.min.js"></script>
+    <script>
+        function changeTabs(type){
+            alert(type);
+        }
+        //根据stars的数量设置星级
+        function setLevel(stars,obj){
+            var objs = $(obj).prevAll();
+            if(objs!=null){
+                for(var i= 0;i < objs.length;i++){
+                    $(objs[i]).removeClass('fa-star-o');
+                    $(objs[i]).addClass('fa-star');
+                }
+
+            }
+            objs = $(obj).nextAll();
+            if(objs!=null){
+                for(var i= 0;i < objs.length;i++){
+                    $(objs[i]).removeClass('fa-star');
+                    $(objs[i]).addClass('fa-star-o');
+                }
+            }
+            $(obj).removeClass('fa-star-o');
+            $(obj).addClass('fa-star');
+        }
+    </script>
+    <title>wechat business</title>
+</head>
+<body>
+<!-- 页头的导航栏 -->
+
+<!-- 图片展示
+<div class="">
+    <img src="images/sample1.jpg" class="img-thumbnail">
+    <img src="images/sample2.jpg" class="img-thumbnail">
+    <img src="images/sample3.jpg" class="img-thumbnail">
+    <img src="images/sample4.jpg" class="img-thumbnail">
+</div>-->
+<!--<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <img src="../images/sample1.jpg" class="img-fullWidth">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <img src="../images/sample2.jpg" class="img-fullWidth">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <img src="../images/sample3.jpg" class="img-fullWidth">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <img src="../images/sample4.jpg" class="img-fullWidth">
+        </div>
+    </div>
+</div> -->
+<!-- 工具栏  -->
+<!-- 跳到其他模块控制按钮
+<div id="toolbar" class="toolBar">
+
+    <div class="menuBar" >
+        <a href="#">
+            <b class="glyphicon glyphicon-home"></b>
+            <br>
+            <span>我的通知</span>
+        </a>
+        <a href="#" class="focus">
+            <b class="glyphicon glyphicon-shopping-cart"></b>
+            <br>
+            <span>我要购票</span>
+        </a>
+        <a href="#">
+            <b class="glyphicon glyphicon-th"></b>
+            <br>
+            <span>购票信息</span>
+        </a>
+    </div>
+</div>-->
+<div>
+    <i class="fa fa-star-o" onclick="setLevel(1,this);"></i>
+    <i class="fa fa-star-o" onclick="setLevel(2,this);"></i>
+    <i class="fa fa-star-o" onclick="setLevel(3,this);"></i>
+    <i class="fa fa-star-o" onclick="setLevel(4,this);"></i>
+    <i class="fa fa-star-o" onclick="setLevel(5,this);"></i>
+</div>
+
+<ul id="myTab" class="nav nav-tabs">
+    <li class="active"><a href="#home" data-toggle="tab" onclick="changeTabs(1);">home</a></li>
+    <li><a href="#second" data-toggle="tab">second</a></li>
+    <li><a href="#third" data-toggle="tab">third</a></li>
+</ul>
+<div class="tab-content">
+    <div id="home" class="tab-pane in active fade">
+        home
+    </div>
+    <div id="second" class="tab-pane fade">
+        second
+    </div>
+    <div id="third" class="tab-pane fade">
+        third
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须为含有id中指示的方法的接口 -->
+<mapper namespace="org.ytgs.common.tree.TreeDao">
+
+	<resultMap type="TreeModel" id="treesMap">
+		<id column="ID" property="id" />
+		<result column="PARENT_ID" property="parentId" />
+		<result column="TEXT" property="text" />
+		<result column="URL" property="url" />
+		<result column="HREF" property="href" />
+	</resultMap>
+	<resultMap type="java.lang.Integer" id="parentIdList">
+		<result column="PARENT_ID" property="parentId" />
+	</resultMap>
+	<select id="getChildByParentId"  resultMap="treesMap">
+	    SELECT ID,CATAGORY_NAME AS TEXT FROM PORTAL_CATAGORY WHERE PARENT_ID=#{parentId} ORDER BY ID	
+	</select>
+	<select id="getChildWithHerfByParentId"  resultMap="treesMap">
+	    SELECT ID,CATAGORY_NAME AS TEXT ,PUB_URL AS HREF FROM PORTAL_CATAGORY WHERE PARENT_ID=#{parentId} ORDER BY ID	
+	</select>
+	<select id="getParentId" resultMap="parentIdList">
+	    SELECT PARENT_ID FROM PORTAL_CATAGORY Group By PARENT_ID Order By PARENT_ID	
+	</select>	
+</mapper>

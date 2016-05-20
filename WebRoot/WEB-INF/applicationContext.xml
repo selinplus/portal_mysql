@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+  http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
+  http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+  http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+">
+	
+	<!-- 配置myBatis的SessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation"
+			value="classpath:org/ytgs/mybatis/config/mybatisconfig.xml" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations"
+			value="classpath*:org/ytgs/mybatis/config/mappers/**/*.xml" />
+	</bean>
+	
+
+	<!-- 上传文件解析器 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+	<!-- 注解支持 -->
+	<context:annotation-config />
+	<!-- 本地数据库数据源-->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		p:driverClassName="com.mysql.jdbc.Driver" p:url="jdbc:mysql://127.0.0.1:3306/portal"
+		p:username="portal" p:password="good88luck" />  
+	<!-- 百度BEA数据库
+	<bean id="dsBaidu"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		p:driverClassName="com.mysql.jdbc.Driver" p:url="jdbc:mysql://sqld.duapp.com:4050/WwHTZsiZRNzWBqaCtSCX"
+		p:username="5tVf8BOFP4duWdpG9YB4Bqr0" p:password="5Li5LDdSBugYQUz1M7PGaKyUeprbIQ7L" /> --> 
+	 <!-- 默认使用dsLocal的数据源 -->
+	
+	<!-- 配置myBatis的自动扫描，使用映射接口 自动生成接口实现类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+		p:sqlSessionFactory-ref="sqlSessionFactory" p:basePackage="org.ytgs" />
+	
+	<!--配置Spring注解式事物 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 定义统一的异常处理类 -->
+	<!-- <bean id="exceptionHandler" class="org.ytgs.exception.MyExceptionHandler"/> -->
+	<bean id="configInfo" class="org.ytgs.util.ConfigInfo"
+		p:htmlUrlForImage="/res/repository/portal/" p:realPhyPathForImage="/WEB-INF/resource/repository/portal/"
+		p:realPhyPathForTpl="/WEB-INF/resource/repository/portal/templates/"
+		p:htmlUrlForTpl="/res/repository/portal/templates/" p:htmlUrlForArt="/res/repository/portal/art/"
+		p:realPhyPathForArt="/WEB-INF/resource/repository/portal/art/"
+		p:htmlUrlForCol="/res/repository/portal/col/" p:realPhyPathForCol="/WEB-INF/resource/repository/portal/col/"
+		p:rightListPath="/WEB-INF/resource/repository/portal/common/"
+		p:pageSize="20" p:topicTopNum="5" p:topicRoot="2" p:unitName="龙之韵科技">
+		<property name="rightCatagoryIdArrayForIndexPage">
+			<props>
+				<prop key="54">60,62,79</prop>	 <!-- 54为首页ID,网站右侧列表包含的栏目ID -->
+			</props>
+		</property>
+		<property name="noticeDeptDm">
+			<props>
+				<prop key="54">0000200010001</prop><!-- 首页专题对应绩效通知的发布机构 -->
+			</props>
+		</property>
+		<property name="qxHomeDzmpId">
+			<props>
+				<prop key="92">445</prop><!-- 区县子站首页下的电子名片栏目ID key为区县首页ID，值为对应的电子名片栏目ID -->
+			</props>
+		</property>
+		<property name="qxHomeLdzlId">
+			<props>
+				<prop key="92">441</prop><!-- 区县子站首页下的领导专栏栏目ID key为区县首页ID -->
+			</props>
+		</property>
+		<property name="specialCatagoryStoreUrl">
+			<props>
+				<prop key="61">/portal/notice/query</prop><!-- 特殊栏目前台grid取数URL,KEY为栏目ID -->
+			</props>
+		</property>
+		<property name="rightPicId">
+			<props>
+				<prop key="60"></prop><!-- 侧面图片栏目ID，取最近图片 -->
+			</props>
+		</property>
+		<property name="recentContents">
+			<props>
+				<prop key="539">10</prop><!-- 特殊栏目前台grid取数URL,KEY为栏目ID -->
+			</props>
+		</property>
+		<property name="customTopNum">
+			<props>
+				<prop key="60">5</prop><!-- 市局新闻特殊栏目取前台条数,KEY为栏目ID -->
+			</props>
+		</property>
+		<property name="indexCatagoryInfo">
+			<props>
+				<prop key="indexId">54</prop> <!-- 网站首页 -->
+				<prop key="picNewId">787</prop>
+				<prop key="picNewsTopNum">5</prop>
+				<prop key="sjxwTopNum">3</prop>
+				<prop key="sjxwId">60</prop>
+				<prop key="xjxwId">68</prop>
+				<prop key="xzfwId">62</prop>
+				<prop key="xzfwTopNum">5</prop>
+				<prop key="topicTopNum">5</prop>
+				<prop key="gsqkTopNum">5</prop>
+				<prop key="gsqkId">101</prop>
+				<prop key="gsdtId">102</prop>
+				<prop key="ssdyId">77</prop>
+				<prop key="ssclId">78</prop>
+				<prop key="mtbdId">79</prop>
+				<prop key="szxwId">64</prop>
+				<prop key="szxwTopNum">2</prop>
+				<prop key="jtshId">81</prop>
+				<prop key="czxsId">82</prop>
+				<prop key="sswhId">83</prop>
+				<prop key="gssrId">103</prop>
+				<prop key="noticeNum">5</prop>
+				<prop key="gztzId">61</prop>
+				<prop key="xwsjId">539</prop>
+				<prop key="tqybId">100</prop>
+				<prop key="jhzjId">741</prop>
+				<prop key="bannerId">786</prop>
+				<prop key="bannerTopNum">10</prop>
+			</props>
+		</property>
+	</bean>
+	<tx:annotation-driven />
+
+</beans>
